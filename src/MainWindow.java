@@ -6,8 +6,13 @@ public class MainWindow extends JFrame {
     CardLayout cardLayout;
     JPanel container;
 
+    LobbyPanel lobbyPanel;
+    TutorialPanel tutorialPanel;
+    GamePanel gamePanel;
+
     public MainWindow(){
         initialize();
+        createUIComponents();
     }
 
     private void initialize() {
@@ -23,6 +28,20 @@ public class MainWindow extends JFrame {
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
 
+        lobbyPanel = new LobbyPanel(this);
+        tutorialPanel = new TutorialPanel(this);
+        gamePanel = new GamePanel(this);
+
         add(container);
+        cardLayout.show(container, String.valueOf(PanelType.LOBBY_PANEL));
+        container.add(lobbyPanel, String.valueOf(PanelType.LOBBY_PANEL));
+        container.add(gamePanel, String.valueOf(PanelType.GAME_PANEL));
+        container.add(tutorialPanel, String.valueOf(PanelType.TUTORIAL_PANEL));
+
+
+    }
+
+    public void switchPanel(PanelType panel) {
+        cardLayout.show(container, String.valueOf(panel));
     }
 }
