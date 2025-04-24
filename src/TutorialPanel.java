@@ -18,7 +18,7 @@ public class TutorialPanel extends JPanel {
         setSize(1600,900);
         setVisible(true);
 
-        lobbyButton = new Button("LOBBY", 400,400,200,200,e ->mainWindow.switchPanel(PanelType.LOBBY_PANEL));
+        lobbyButton = new Button("LOBBY", 700,700,200,100,e ->mainWindow.switchPanel(PanelType.LOBBY_PANEL));
         add(lobbyButton);
     }
 

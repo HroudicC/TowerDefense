@@ -4,11 +4,14 @@ import java.awt.*;
 public class GamePanel extends JPanel {
 
     MainWindow mainWindow;
+    MapLoader mapLoader;
 
     Button lobbyButton;
 
-    public GamePanel(MainWindow mainWindow) {
+    public GamePanel(MainWindow mainWindow, MapLoader mapLoader) {
         this.mainWindow = mainWindow;
+        this.mapLoader = mapLoader;
+        add(mapLoader);
 
         initialize();
     }

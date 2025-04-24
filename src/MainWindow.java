@@ -9,6 +9,7 @@ public class MainWindow extends JFrame {
     LobbyPanel lobbyPanel;
     TutorialPanel tutorialPanel;
     GamePanel gamePanel;
+    MapLoader mapLoader;
 
     public MainWindow(){
         initialize();
@@ -28,9 +29,10 @@ public class MainWindow extends JFrame {
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
 
+        mapLoader = new MapLoader();
         lobbyPanel = new LobbyPanel(this);
         tutorialPanel = new TutorialPanel(this);
-        gamePanel = new GamePanel(this);
+        gamePanel = new GamePanel(this, mapLoader);
 
         add(container);
         cardLayout.show(container, String.valueOf(PanelType.LOBBY_PANEL));
