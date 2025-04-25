@@ -12,7 +12,6 @@ public class MapLoader extends JPanel {
 
     public MapLoader() {
         loadMap();
-        setBounds(0,125,1200,750);
         setOpaque(true);
     }
 
@@ -74,6 +73,18 @@ public class MapLoader extends JPanel {
                 g.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
-        System.out.println("Map is loaded");
+    }
+
+
+    public int getTILE_SIZE() {
+        return TILE_SIZE;
+    }
+
+    public ArrayList<TileType[]> getMapByRows() {
+        return mapByRows;
+    }
+
+    public void setMapByRows(ArrayList<TileType[]> mapByRows) {
+        this.mapByRows = mapByRows;
     }
 }

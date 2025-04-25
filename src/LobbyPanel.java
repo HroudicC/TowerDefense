@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class LobbyPanel extends JPanel {
 
@@ -31,7 +30,7 @@ public class LobbyPanel extends JPanel {
          tutorialButton = new Button("TUTORIAL",900,350,400,200, e -> mainWindow.switchPanel(PanelType.TUTORIAL_PANEL));
         add(tutorialButton);
 
-         exitButton = new Button("EXIT",650,600,300,100, e -> mainWindow.dispose());
+         exitButton = new Button("EXIT",650,600,300,100, e -> System.exit(0));
         add(exitButton);
 
     }
