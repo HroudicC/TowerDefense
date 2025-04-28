@@ -1,3 +1,7 @@
+package game.ui;
+
+import game.map.PanelType;
+
 import javax.swing.*;
 
 public class LobbyPanel extends JPanel {

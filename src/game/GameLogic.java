@@ -1,3 +1,8 @@
+package game;
+
+import game.entities.Enemy;
+import game.map.MapLoader;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -13,7 +18,6 @@ public class GameLogic {
         enemies = new ArrayList<>();
         lastSpawnTime = System.currentTimeMillis();
     }
-
 
     public void update() {
         long currentTime = System.currentTimeMillis();

@@ -1,3 +1,8 @@
+package game.entities;
+
+import game.map.MapLoader;
+import game.map.TileType;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -89,7 +94,7 @@ public class Enemy extends AbstractEntity {
         }
     }
 
-    
+
     @Override
     public ArrayList<Point> update() {
 

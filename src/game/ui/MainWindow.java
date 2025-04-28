@@ -1,3 +1,8 @@
+package game.ui;
+
+import game.map.MapLoader;
+import game.map.PanelType;
+
 import javax.swing.*;
 import java.awt.*;
 

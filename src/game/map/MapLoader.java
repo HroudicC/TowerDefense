@@ -1,3 +1,5 @@
+package game.map;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -55,16 +57,16 @@ public class MapLoader extends JPanel {
             for (int col = 0; col < tileRow.length; col++) {
                 TileType type = tileRow[col];
                 switch (type) {
-                    case GRASS:
+                    case TileType.GRASS:
                         g.setColor(Color.GREEN);
                         break;
-                    case PATH:
+                    case TileType.PATH:
                         g.setColor(new Color(84, 89, 90));
                         break;
-                    case START:
+                    case TileType.START:
                         g.setColor(Color.BLUE);
                         break;
-                    case END:
+                    case TileType.END:
                         g.setColor(Color.RED);
                         break;
                 }

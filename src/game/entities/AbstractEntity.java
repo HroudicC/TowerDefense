@@ -1,3 +1,5 @@
+package game.entities;
+
 import java.awt.*;
 import java.util.ArrayList;
 
