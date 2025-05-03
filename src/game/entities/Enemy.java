@@ -11,14 +11,16 @@ public class Enemy extends AbstractEntity {
     private int health;
     private int pathIndex = 0;
     private ArrayList<Point> path = new ArrayList<>();
+    private Color enemyColor;
 
     private MapLoader mapLoader;
     private boolean pathCalculated = false;
 
-    public Enemy(int x, int y, int width, int height, int speed, int health, MapLoader mapLoader) {
+    public Enemy(int x, int y, int width, int height, int speed, int health, Color enemyColor, MapLoader mapLoader) {
         super(x, y, width, height);
         this.speed = speed;
         this.health = health;
+        this.enemyColor = enemyColor;
         this.mapLoader = mapLoader;
     }
 
@@ -137,7 +139,7 @@ public class Enemy extends AbstractEntity {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.PINK);
+        g.setColor(enemyColor);
         g.fillOval(x, y, getWidth(), getHeight());
     }
 }

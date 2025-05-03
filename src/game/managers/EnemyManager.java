@@ -24,26 +24,35 @@ public class EnemyManager {
         int height = mapLoader.getTILE_SIZE();
         int speed = 8;
         int health = 20;
+        Color enemyColor = Color.PINK;
 
         switch (enemyType) {
             case EnemyType.BASIC -> {
-                speed = 8;
+                speed = 5;
                 health = 20;
+                enemyColor = Color.PINK;
                 break;
             }
             case EnemyType.SPEED -> {
-                speed = 10;
+                speed = 20;
                 health = 15;
+                enemyColor = Color.YELLOW;
                 break;
             }
             case EnemyType.TANK -> {
                 speed = 5;
                 health = 25;
+                enemyColor = Color.BLACK;
                 break;
+            }
+            default -> {
+                speed = 8;
+                health = 20;
+                enemyColor = Color.PINK;
             }
         }
 
-        Enemy enemy = new Enemy(0, 0, width, height, speed, health, mapLoader);
+        Enemy enemy = new Enemy(0, 0, width, height, speed, health, enemyColor,  mapLoader);
         enemies.add(enemy);
         System.out.println("Spawnnul se nepřítel typu " + enemyType + ". Celkový počet: " + enemies.size());
 
@@ -65,5 +74,21 @@ public class EnemyManager {
         for (Enemy enemy : enemies) {
             enemy.draw(g);
         }
+    }
+
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public void setEnemies(ArrayList<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
+    public MapLoader getMapLoader() {
+        return mapLoader;
+    }
+
+    public void setMapLoader(MapLoader mapLoader) {
+        this.mapLoader = mapLoader;
     }
 }

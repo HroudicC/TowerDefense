@@ -12,11 +12,15 @@ public class WaveManager {
     private long lastSpawnTime;
     private EnemyManager enemyManager;
 
+    private boolean waitingForNextWave;
+
 
     public WaveManager(EnemyManager enemyManager) {
         this.enemyManager = enemyManager;
         waves = new ArrayList<>();
         currentWaveIndex = 0;
+        waitingForNextWave = false;
+        lastSpawnTime = System.currentTimeMillis();
 
         initialize();
     }
@@ -25,6 +29,10 @@ public class WaveManager {
 
         if (currentWaveIndex >= waves.size()) {
             System.out.println("Vsechny vlny jsou dokoncene");
+            return;
+        }
+
+        if (waitingForNextWave) {
             return;
         }
 
@@ -38,8 +46,8 @@ public class WaveManager {
             lastSpawnTime = currentTime;
         }
 
-        if (currentWave.isFinished()){
-           currentWaveIndex++;
+        if (currentWave.isFinished() && enemyManager.getEnemies().isEmpty()) {
+            waitingForNextWave = true;
             System.out.println("Vlna " + currentWaveIndex + " dokoncena");
         }
 
@@ -47,9 +55,17 @@ public class WaveManager {
 
     private void initialize(){
         waves.add(new Wave(5, EnemyType.BASIC, 2000));
-        waves.add(new Wave(10,EnemyType.BASIC, 1800));
-        waves.add(new Wave(7,EnemyType.SPEED, 2000));
+        waves.add(new Wave(10,EnemyType.SPEED, 1800));
+        waves.add(new Wave(7,EnemyType.TANK, 2000));
         waves.add(new Wave(10, EnemyType.SPEED, 1800));
+    }
+
+    public void startNextWave() {
+        if (waitingForNextWave) {
+            waitingForNextWave = false;
+            currentWaveIndex++;
+            lastSpawnTime = System.currentTimeMillis();
+        }
     }
 
     public int getCurrentWaveNumber() {
@@ -86,5 +102,13 @@ public class WaveManager {
 
     public void setEnemyManager(EnemyManager enemyManager) {
         this.enemyManager = enemyManager;
+    }
+
+    public boolean isWaitingForNextWave() {
+        return waitingForNextWave;
+    }
+
+    public void setWaitingForNextWave(boolean waitingForNextWave) {
+        this.waitingForNextWave = waitingForNextWave;
     }
 }

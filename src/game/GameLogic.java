@@ -1,58 +1,43 @@
 package game;
 
 import game.entities.Enemy;
+import game.managers.EnemyManager;
+import game.managers.WaveManager;
 import game.map.MapLoader;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GameLogic {
+
     private MapLoader mapLoader;
     private ArrayList<Enemy> enemies;
-    private long lastSpawnTime;
-    private int spawnInterval = 2000;
+
+    private WaveManager waveManager;
+    private EnemyManager enemyManager;
 
     public GameLogic(MapLoader mapLoader) {
         this.mapLoader = mapLoader;
+        enemyManager = new EnemyManager(mapLoader);
+        waveManager = new WaveManager(enemyManager);
 
         enemies = new ArrayList<>();
-        lastSpawnTime = System.currentTimeMillis();
     }
 
     public void update() {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastSpawnTime >= spawnInterval) {
-            spawnEnemy();
-            lastSpawnTime = currentTime;
-        }
-
-        ArrayList<Enemy> enemiesToRemove = new ArrayList<>();
-        for (Enemy enemy : enemies) {
-            enemy.update();
-            if (enemy.hasReachedEnd()) {
-                System.out.println("Nepřítel dorazil do cíle!");
-                enemiesToRemove.add(enemy);
-            }
-        }
-        enemies.removeAll(enemiesToRemove);
+       waveManager.update();
+       enemyManager.update();
     }
 
-    //Metoda pro vyzkouseni funkcnosti
-    private void spawnEnemy() {
-        int width = mapLoader.getTILE_SIZE();
-        int height = mapLoader.getTILE_SIZE();
-        int speed = 2;
-        int health = 10;
-
-        Enemy newEnemy = new Enemy(0, 0, width, height, speed, health, mapLoader);
-        enemies.add(newEnemy);
-        System.out.println("Spawnnul se nový nepřítel, celkový počet: " + enemies.size());
+    public void startNextWave(){
+        if (waveManager.isWaitingForNextWave()){
+            waveManager.startNextWave();
+            System.out.println("Vlna" + waveManager.getCurrentWaveNumber());
+        }
     }
 
     public void draw(Graphics g) {
-        for (Enemy enemy : enemies) {
-            enemy.draw(g);
-        }
+        enemyManager.draw(g);
     }
 
     public ArrayList<Enemy> getEnemies() {

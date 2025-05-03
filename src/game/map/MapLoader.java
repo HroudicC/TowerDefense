@@ -19,7 +19,7 @@ public class MapLoader extends JPanel {
 
 
     public boolean loadMap() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/Map"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/game/map/Map"))) {
 
             String line;
             int lineCounter = 0;
@@ -49,7 +49,7 @@ public class MapLoader extends JPanel {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         for (int row = 0; row < mapByRows.size(); row++) {
