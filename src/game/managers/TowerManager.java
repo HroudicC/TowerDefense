@@ -36,6 +36,22 @@ public class TowerManager {
         return new Tower(x,y, width, height,range, color);
     }
 
+    public boolean isTowerAt(int gridX, int gridY, int tileSize) {
+
+        for (Tower tower : towers) {
+
+            int towerGridX = tower.getX() / tileSize;
+            int towerGridY = tower.getY() / tileSize;
+
+            if (towerGridX == gridX && towerGridY == gridY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     public void draw(Graphics g) {
         for (Tower tower : towers) {
             tower.draw(g);

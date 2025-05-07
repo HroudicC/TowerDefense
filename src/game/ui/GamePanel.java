@@ -68,13 +68,20 @@ public class GamePanel extends JPanel {
                 int gridY = e.getY() / tileSize;
                 TileType tileType = mapLoader.getTileType(gridX, gridY);
 
-                if (tileType == TileType.GRASS) {
-                    Tower newTower = towerManager.createTower(selectedTowerType, gridX, gridY, tileSize);
-                    towerManager.addTower(newTower);
-                    selectedTowerType = null;
-                    System.out.println("Pridana vezicka");
+                if (tileType != TileType.GRASS) {
+                    System.out.println("Nelze pridat na tohle pole");
+                    return;
                 }
-                System.out.println("Nelze pridat");
+
+                if (towerManager.isTowerAt(gridX, gridY, tileSize)){
+                    System.out.println("Nelze pridat protoze tam uz vezicka je");
+                    return;
+                }
+
+                Tower newTower = towerManager.createTower(selectedTowerType, gridX, gridY, tileSize);
+                towerManager.addTower(newTower);
+                selectedTowerType = null;
+                System.out.println("Pridana vezicka");
             }
         });
 
