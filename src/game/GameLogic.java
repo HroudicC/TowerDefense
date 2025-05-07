@@ -30,10 +30,8 @@ public class GameLogic {
     }
 
     public void startNextWave(){
-        if (waveManager.isWaitingForNextWave()){
             waveManager.startNextWave();
             System.out.println("Vlna" + waveManager.getCurrentWaveNumber());
-        }
     }
 
     public void draw(Graphics g) {

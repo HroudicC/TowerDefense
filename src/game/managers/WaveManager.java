@@ -13,6 +13,7 @@ public class WaveManager {
     private EnemyManager enemyManager;
 
     private boolean waitingForNextWave;
+    private boolean waveActive = false;
 
 
     public WaveManager(EnemyManager enemyManager) {
@@ -26,6 +27,8 @@ public class WaveManager {
     }
 
     public void update() {
+
+        if (!waveActive) { return; }
 
         if (currentWaveIndex >= waves.size()) {
             System.out.println("Vsechny vlny jsou dokoncene");
@@ -47,8 +50,10 @@ public class WaveManager {
         }
 
         if (currentWave.isFinished() && enemyManager.getEnemies().isEmpty()) {
+            waveActive = false;
             waitingForNextWave = true;
-            System.out.println("Vlna " + currentWaveIndex + " dokoncena");
+            System.out.println("Vlna " + (currentWaveIndex + 1) + " dokoncena");
+            currentWaveIndex++;
         }
 
     }
@@ -61,11 +66,11 @@ public class WaveManager {
     }
 
     public void startNextWave() {
-        if (waitingForNextWave) {
+        if (!waveActive && currentWaveIndex < waves.size()) {
+            waveActive = true;
             waitingForNextWave = false;
-            currentWaveIndex++;
             lastSpawnTime = System.currentTimeMillis();
-        }
+            System.out.println("Spouštím vlnu " + (currentWaveIndex + 1));        }
     }
 
     public int getCurrentWaveNumber() {

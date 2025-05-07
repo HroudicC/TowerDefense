@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Enemy extends AbstractEntity {
+
     private int speed;
     private int health;
     private int pathIndex = 0;

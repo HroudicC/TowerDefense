@@ -28,7 +28,7 @@ public class LobbyPanel extends JPanel {
     }
 
     private void createButtons() {
-         gameButton = new Button("START",300,350,400,200, e -> mainWindow.switchPanel(PanelType.GAME_PANEL));
+         gameButton = new Button("GAME",300,350,400,200, e -> mainWindow.switchPanel(PanelType.GAME_PANEL));
         add(gameButton);
 
          tutorialButton = new Button("TUTORIAL",900,350,400,200, e -> mainWindow.switchPanel(PanelType.TUTORIAL_PANEL));

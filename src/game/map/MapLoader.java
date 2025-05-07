@@ -77,6 +77,17 @@ public class MapLoader extends JPanel {
         }
     }
 
+    public TileType getTileType(int gridX, int gridY) {
+        if (gridY < 0 || gridY >= mapByRows.size()) {
+            return null;
+        }
+        TileType[] row = mapByRows.get(gridY);
+        if (gridX < 0 || gridX >= row.length) {
+            return null;
+        }
+        return row[gridX];
+    }
+
 
     public int getTILE_SIZE() {
         return TILE_SIZE;
