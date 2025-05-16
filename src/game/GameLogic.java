@@ -1,32 +1,36 @@
 package game;
 
-import game.entities.Enemy;
+import game.managers.BulletManager;
 import game.managers.EnemyManager;
+import game.managers.TowerManager;
 import game.managers.WaveManager;
 import game.map.MapLoader;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GameLogic {
 
     private MapLoader mapLoader;
-    private ArrayList<Enemy> enemies;
 
     private WaveManager waveManager;
     private EnemyManager enemyManager;
+    private BulletManager bulletManager;
+    private TowerManager towerManager;
 
     public GameLogic(MapLoader mapLoader) {
         this.mapLoader = mapLoader;
         enemyManager = new EnemyManager(mapLoader);
         waveManager = new WaveManager(enemyManager);
+        bulletManager = new BulletManager();
+        towerManager = new TowerManager();
 
-        enemies = new ArrayList<>();
     }
 
     public void update() {
        waveManager.update();
        enemyManager.update();
+       towerManager.update(System.currentTimeMillis(), enemyManager, bulletManager);
+       bulletManager.update(enemyManager);
     }
 
     public void startNextWave(){
@@ -35,10 +39,13 @@ public class GameLogic {
     }
 
     public void draw(Graphics g) {
+        mapLoader.paintComponent(g);
         enemyManager.draw(g);
+        towerManager.draw(g);
+        bulletManager.draw(g);
     }
 
-    public ArrayList<Enemy> getEnemies() {
-        return enemies;
+    public TowerManager getTowerManager() {
+        return towerManager;
     }
 }

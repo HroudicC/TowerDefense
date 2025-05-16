@@ -1,5 +1,6 @@
 package game.managers;
 
+import game.entities.Bullet;
 import game.map.MapLoader;
 import game.entities.Enemy;
 import game.entities.EnemyType;
@@ -22,28 +23,25 @@ public class EnemyManager {
 
         int width = mapLoader.getTILE_SIZE();
         int height = mapLoader.getTILE_SIZE();
-        int speed = 8;
-        int health = 20;
-        Color enemyColor = Color.PINK;
+        int speed;
+        int health;
+        Color enemyColor;
 
         switch (enemyType) {
             case EnemyType.BASIC -> {
-                speed = 5;
-                health = 20;
+                speed = 10;
+                health = 50;
                 enemyColor = Color.PINK;
-                break;
             }
             case EnemyType.SPEED -> {
-                speed = 20;
-                health = 15;
+                speed = 13;
+                health = 25;
                 enemyColor = Color.YELLOW;
-                break;
             }
             case EnemyType.TANK -> {
-                speed = 5;
-                health = 25;
+                speed = 6;
+                health = 100;
                 enemyColor = Color.BLACK;
-                break;
             }
             default -> {
                 speed = 8;
@@ -63,12 +61,52 @@ public class EnemyManager {
         for (Enemy enemy : enemies) {
             enemy.update();
             if (enemy.hasReachedEnd()) {
-                System.out.println("Nepřítel dorazil do cíle a bude odstraněn.");
+                System.out.println("Nepritel dojel do cile");
+                enemiesToRemove.add(enemy);
+            } else if (enemy.isDead()){
+                System.out.println("Nepritel znicen");
                 enemiesToRemove.add(enemy);
             }
         }
         enemies.removeAll(enemiesToRemove);
     }
+
+    public Enemy findTargetInRange(int towerX, int towerY, int range) {
+        Enemy closestEnemy = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (Enemy enemy: enemies) {
+            int enemyCenterX = enemy.getX() + enemy.getWidth() / 2;
+            int enemyCenterY = enemy.getY() + enemy.getHeight() / 2;
+            double distance = Math.sqrt(Math.pow(towerX - enemyCenterX, 2) + Math.pow(towerY - enemyCenterY, 2));
+            if (distance <= range && distance < closestDistance) {
+               closestEnemy = enemy;
+               closestDistance = distance;
+            }
+        }
+        return closestEnemy;
+    }
+
+    public void checkBulletCollision(Bullet bullet) {
+        double collisionThreshold = 35;
+        for (Enemy enemy : enemies) {
+
+            int enemyCenterX = enemy.getX() + enemy.getWidth() / 2;
+            int enemyCenterY = enemy.getY() + enemy.getHeight() / 2;
+
+            //Vzdalenost strely od stredu nepritele
+            double diffX = bullet.getX() - enemyCenterX;
+            double diffY = bullet.getY() - enemyCenterY;
+            double distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+            if (distance < collisionThreshold) {
+                bullet.deactivate();
+                enemy.takeDamage(bullet.getDamage());
+                break;
+            }
+        }
+    }
+
 
     public void draw(Graphics g) {
         for (Enemy enemy : enemies) {
@@ -78,17 +116,5 @@ public class EnemyManager {
 
     public ArrayList<Enemy> getEnemies() {
         return enemies;
-    }
-
-    public void setEnemies(ArrayList<Enemy> enemies) {
-        this.enemies = enemies;
-    }
-
-    public MapLoader getMapLoader() {
-        return mapLoader;
-    }
-
-    public void setMapLoader(MapLoader mapLoader) {
-        this.mapLoader = mapLoader;
     }
 }

@@ -9,7 +9,7 @@ public class Wave {
 
     public Wave(int totalEnemies, EnemyType enemyType, int spawnInterval) {
         this.totalEnemies = totalEnemies;
-        this.spawnedEnemies = spawnedEnemies;
+        this.spawnedEnemies = 0;
         this.enemyType = enemyType;
         this.spawnInterval = spawnInterval;
     }

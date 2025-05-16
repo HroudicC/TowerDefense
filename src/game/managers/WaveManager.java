@@ -12,7 +12,7 @@ public class WaveManager {
     private long lastSpawnTime;
     private EnemyManager enemyManager;
 
-    private boolean waitingForNextWave;
+    private boolean waitingForNextWave = false;
     private boolean waveActive = false;
 
 
@@ -20,29 +20,24 @@ public class WaveManager {
         this.enemyManager = enemyManager;
         waves = new ArrayList<>();
         currentWaveIndex = 0;
-        waitingForNextWave = false;
         lastSpawnTime = System.currentTimeMillis();
 
         initialize();
     }
 
     public void update() {
-
-        if (!waveActive) { return; }
+        if (!waveActive) return;
 
         if (currentWaveIndex >= waves.size()) {
             System.out.println("Vsechny vlny jsou dokoncene");
             return;
         }
 
-        if (waitingForNextWave) {
-            return;
-        }
+        if (waitingForNextWave) return;
 
         Wave currentWave = waves.get(getCurrentWaveIndex());
         long currentTime = System.currentTimeMillis();
 
-        //Spawn nepratel podle intervalu v dane vlne
         if (currentWave.canSpawn() && currentTime - lastSpawnTime >= currentWave.getSpawnInterval()) {
             enemyManager.spawnEnemy(currentWave.getEnemyType());
             currentWave.enemySpawned();
@@ -77,43 +72,7 @@ public class WaveManager {
         return currentWaveIndex + 1;
     }
 
-    public ArrayList<Wave> getWaves() {
-        return waves;
-    }
-
-    public void setWaves(ArrayList<Wave> waves) {
-        this.waves = waves;
-    }
-
     public int getCurrentWaveIndex() {
         return currentWaveIndex;
-    }
-
-    public void setCurrentWaveIndex(int currentWaveIndex) {
-        this.currentWaveIndex = currentWaveIndex;
-    }
-
-    public long getLastSpawnTime() {
-        return lastSpawnTime;
-    }
-
-    public void setLastSpawnTime(long lastSpawnTime) {
-        this.lastSpawnTime = lastSpawnTime;
-    }
-
-    public EnemyManager getEnemyManager() {
-        return enemyManager;
-    }
-
-    public void setEnemyManager(EnemyManager enemyManager) {
-        this.enemyManager = enemyManager;
-    }
-
-    public boolean isWaitingForNextWave() {
-        return waitingForNextWave;
-    }
-
-    public void setWaitingForNextWave(boolean waitingForNextWave) {
-        this.waitingForNextWave = waitingForNextWave;
     }
 }

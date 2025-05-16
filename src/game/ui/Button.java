@@ -12,6 +12,8 @@ public class Button extends JButton {
         setFocusable(false);
         setForeground(Color.BLACK);
         setFont(new Font("Arial", Font.BOLD, 30));
-        addActionListener(action);
+       if (action != null) {
+           addActionListener(action);
+       }
     }
 }

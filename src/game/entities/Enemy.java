@@ -16,6 +16,7 @@ public class Enemy extends AbstractEntity {
 
     private MapLoader mapLoader;
     private boolean pathCalculated = false;
+    private Direction movementDirection;
 
     public Enemy(int x, int y, int width, int height, int speed, int health, Color enemyColor, MapLoader mapLoader) {
         super(x, y, width, height);
@@ -107,29 +108,55 @@ public class Enemy extends AbstractEntity {
 
         if (pathCalculated && pathIndex < path.size()) {
             Point targetTile = path.get(pathIndex);
-
             int targetX = targetTile.x * mapLoader.getTILE_SIZE();
             int targetY = targetTile.y * mapLoader.getTILE_SIZE();
-
             int dx = targetX - x;
             int dy = targetY - y;
-            double distance = Math.sqrt(dx * dx + dy * dy);
+            double distance = Math.sqrt(dx * dx + dy * dy); //Vypocitani vzdalenosti mezi enemy a vezi
 
             if (distance <= speed) {
                 x = targetX;
                 y = targetY;
-                pathIndex++; // Posun na další bod cesty
+                pathIndex++; // posune na dalsi bod cesty
             } else {
                 x += (int) ((dx / distance) * speed);
                 y += (int) ((dy / distance) * speed);
             }
 
-            if (pathIndex >= path.size()) {
-                System.out.println("Nepřítel dorazil do cíle!");
+            if (pathIndex < path.size() - 1) {
+                Point current = path.get(pathIndex);
+                Point next = path.get(pathIndex + 1);
+                int diffX = next.x - current.x;
+                int diffY = next.y - current.y;
+
+                //Porovnani rozdilu X a Y kvuli pohybu
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (diffX > 0) {
+                        movementDirection = Direction.RIGHT;
+                    } else {
+                        movementDirection = Direction.LEFT;
+                    }
+                } else {
+                    if (diffY > 0) {
+                        movementDirection = Direction.DOWN;
+                    } else {
+                        movementDirection = Direction.UP;
+                    }
+                }
 
             }
         }
         return path;
+    }
+
+    public void takeDamage(int damage) {
+        this.health -= damage;
+
+        System.out.println("Enemy dostal " + damage + " damage. Zbyvajici zivoty: " + health);
+
+        if(this.health <= 0) {
+            this.health = 0;
+        }
     }
 
 
@@ -137,6 +164,9 @@ public class Enemy extends AbstractEntity {
         return pathCalculated && pathIndex >= path.size();
     }
 
+    public boolean isDead(){
+       return health <= 0;
+    }
 
     @Override
     public void draw(Graphics g) {

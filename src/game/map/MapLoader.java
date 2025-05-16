@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MapLoader extends JPanel {
@@ -16,7 +17,6 @@ public class MapLoader extends JPanel {
         loadMap();
         setOpaque(true);
     }
-
 
     public boolean loadMap() {
         try (BufferedReader br = new BufferedReader(new FileReader("src/game/map/Map"))) {
@@ -41,7 +41,7 @@ public class MapLoader extends JPanel {
                 }
                 mapByRows.add(row);
             }
-        }catch (Exception e) {
+        }catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -97,7 +97,4 @@ public class MapLoader extends JPanel {
         return mapByRows;
     }
 
-    public void setMapByRows(ArrayList<TileType[]> mapByRows) {
-        this.mapByRows = mapByRows;
-    }
 }

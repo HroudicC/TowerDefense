@@ -1,5 +1,8 @@
 package game.entities;
 
+import game.managers.BulletManager;
+import game.managers.EnemyManager;
+
 import java.awt.*;
 
 public class Tower  {
@@ -7,68 +10,74 @@ public class Tower  {
     private int x, y;
     private int width, height;
     private int range;
+    private int damage;
     private Color color;
 
+    private double bulletSpeed = 20;
+    private long lastShotTime;
+    private long cooldown = 1000;
 
-    public Tower(int x, int y, int width, int height, int range, Color color) {
+    private Enemy currentEnemy;
+
+
+    public Tower(int x, int y, int width, int height, int range, int damage, Color color) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.range = range;
+        this.damage = damage;
         this.color = color;
+        this.lastShotTime = 0;
     }
 
-    public void update() {
+    public int getCenterX(){
+        return x+width/2;
+    }
 
+    public int getCenterY(){
+        return y+height/2;
+    }
+
+    public void update(long currentTime, EnemyManager enemyManager, BulletManager bulletManager) {
+        int centerX = getCenterX();
+        int centerY = getCenterY();
+
+
+        if (currentEnemy != null) {
+            int enemyCenterX = currentEnemy.getCenterX();
+            int enemyCenterY = currentEnemy.getCenterY();
+            double dx = enemyCenterX - centerX;
+            double dy = enemyCenterY - centerY;
+            double distance = Math.sqrt(dx * dx + dy * dy); //Vypocitani vzdalenosti mezi enemy a vezi
+            if (distance > range || currentEnemy.isDead()) {
+                currentEnemy = null;
+            }
+        }
+
+        if (currentEnemy == null) {
+            currentEnemy = enemyManager.findTargetInRange(centerX, centerY, range);
+        }
+
+        if (currentEnemy != null && currentTime - lastShotTime >= cooldown) {
+            int enemyCenterX = currentEnemy.getCenterX();
+            int enemyCenterY = currentEnemy.getCenterY();
+            double diffX = enemyCenterX - centerX;
+            double diffY = enemyCenterY - centerY;
+            double angle = Math.atan2(diffY, diffX); // Vypocet uhlu mezi enemy a vezi
+
+            Bullet newBullet = new Bullet(centerX, centerY, damage, bulletSpeed, angle);
+            bulletManager.addBullet(newBullet);
+            lastShotTime = currentTime;
+        }
     }
 
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public void setRange(int range) {
-        this.range = range;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     public void draw(Graphics g) {
