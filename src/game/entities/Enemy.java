@@ -8,8 +8,7 @@ import java.util.ArrayList;
 
 public class Enemy extends AbstractEntity {
 
-    private int speed;
-    private int health;
+    private int speed, health, moneyReward;
     private int pathIndex = 0;
     private ArrayList<Point> path = new ArrayList<>();
     private Color enemyColor;
@@ -18,11 +17,12 @@ public class Enemy extends AbstractEntity {
     private boolean pathCalculated = false;
     private Direction movementDirection;
 
-    public Enemy(int x, int y, int width, int height, int speed, int health, Color enemyColor, MapLoader mapLoader) {
+    public Enemy(int x, int y, int width, int height, int speed, int health, Color enemyColor, int moneyReward, MapLoader mapLoader) {
         super(x, y, width, height);
         this.speed = speed;
         this.health = health;
         this.enemyColor = enemyColor;
+        this.moneyReward = moneyReward;
         this.mapLoader = mapLoader;
     }
 
@@ -156,6 +156,7 @@ public class Enemy extends AbstractEntity {
 
         if(this.health <= 0) {
             this.health = 0;
+            System.out.println("Enemy je mrtvi. Odmena: " + moneyReward + "$.");
         }
     }
 
@@ -166,6 +167,10 @@ public class Enemy extends AbstractEntity {
 
     public boolean isDead(){
        return health <= 0;
+    }
+
+    public int getMoneyReward() {
+        return moneyReward;
     }
 
     @Override

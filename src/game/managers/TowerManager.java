@@ -3,21 +3,35 @@ package game.managers;
 import game.entities.Tower;
 import game.entities.TowerType;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class TowerManager {
 
     private ArrayList<Tower> towers = new ArrayList<>();
+    private MoneyManager moneyManager;
 
-    public void addTower(Tower tower) {
-        towers.add(tower);
+    public TowerManager(MoneyManager moneyManager) {
+        this.moneyManager = moneyManager;
+    }
+
+    public boolean addTower(Tower tower) {
+        int cost = tower.getMoneyCost();
+        if (moneyManager.spendMoney(cost)) {
+            System.out.println("Koupil si vez za: " + tower.getMoneyCost() + "$. Nyni ti zbyva: " + moneyManager.getMoney() + "$.");
+            towers.add(tower);
+            return true;
+        }
+        JOptionPane.showMessageDialog(null, "Nemas dostatek penez ke koupeni veze :(");
+        return false;
     }
 
     public Tower createTower(TowerType type, int gridX, int gridY, int tileSize) {
         int width = 50, height = 50;
         int range = 150;
         int damage = 25;
+        int moneyCost = 50;
         Color color = Color.GRAY;
 
         switch (type) {
@@ -27,6 +41,7 @@ public class TowerManager {
                 width = 50;
                 height = 50;
                 damage = 35;
+                moneyCost = 50;
                 break;
             case SNIPER:
                 color = Color.RED;
@@ -34,6 +49,7 @@ public class TowerManager {
                 width = 40;
                 height = 40;
                 damage = 25;
+                moneyCost = 50;
                 break;
             case BOXER:
                 color = Color.MAGENTA;
@@ -41,11 +57,12 @@ public class TowerManager {
                 width = 60;
                 height = 60;
                 damage = 40;
+                moneyCost = 50;
                 break;
         }
         int x = gridX * tileSize + (tileSize - width) / 2;
         int y = gridY * tileSize + (tileSize - height) / 2;
-        return new Tower(x,y, width, height,range, damage, color);
+        return new Tower(x,y, width, height,range, damage, color, moneyCost);
     }
 
     public boolean isTowerAt(int gridX, int gridY, int tileSize) {

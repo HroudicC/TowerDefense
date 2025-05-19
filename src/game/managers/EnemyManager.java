@@ -12,9 +12,11 @@ public class EnemyManager {
 
     private ArrayList<Enemy> enemies;
     private MapLoader mapLoader;
+    private MoneyManager moneyManager;
 
-    public EnemyManager(MapLoader mapLoader) {
+    public EnemyManager(MapLoader mapLoader, MoneyManager moneyManager) {
         this.mapLoader = mapLoader;
+        this.moneyManager = moneyManager;
         enemies = new ArrayList<>();
     }
 
@@ -23,8 +25,7 @@ public class EnemyManager {
 
         int width = mapLoader.getTILE_SIZE();
         int height = mapLoader.getTILE_SIZE();
-        int speed;
-        int health;
+        int speed, health, moneyReward;
         Color enemyColor;
 
         switch (enemyType) {
@@ -32,25 +33,29 @@ public class EnemyManager {
                 speed = 10;
                 health = 50;
                 enemyColor = Color.PINK;
+                moneyReward = 50;
             }
             case EnemyType.SPEED -> {
                 speed = 13;
                 health = 25;
                 enemyColor = Color.YELLOW;
+                moneyReward = 50;
             }
             case EnemyType.TANK -> {
                 speed = 6;
                 health = 100;
                 enemyColor = Color.BLACK;
+                moneyReward = 50;
             }
             default -> {
                 speed = 8;
                 health = 20;
                 enemyColor = Color.PINK;
+                moneyReward = 50;
             }
         }
 
-        Enemy enemy = new Enemy(0, 0, width, height, speed, health, enemyColor,  mapLoader);
+        Enemy enemy = new Enemy(0, 0, width, height, speed, health, enemyColor, moneyReward, mapLoader);
         enemies.add(enemy);
         System.out.println("Spawnnul se nepřítel typu " + enemyType + ". Celkový počet: " + enemies.size());
 
@@ -64,7 +69,7 @@ public class EnemyManager {
                 System.out.println("Nepritel dojel do cile");
                 enemiesToRemove.add(enemy);
             } else if (enemy.isDead()){
-                System.out.println("Nepritel znicen");
+                moneyManager.addMoney(enemy.getMoneyReward());
                 enemiesToRemove.add(enemy);
             }
         }

@@ -1,9 +1,6 @@
 package game;
 
-import game.managers.BulletManager;
-import game.managers.EnemyManager;
-import game.managers.TowerManager;
-import game.managers.WaveManager;
+import game.managers.*;
 import game.map.MapLoader;
 
 import java.awt.*;
@@ -16,13 +13,15 @@ public class GameLogic {
     private EnemyManager enemyManager;
     private BulletManager bulletManager;
     private TowerManager towerManager;
+    private MoneyManager moneyManager;
 
     public GameLogic(MapLoader mapLoader) {
         this.mapLoader = mapLoader;
-        enemyManager = new EnemyManager(mapLoader);
+        moneyManager = new MoneyManager();
+        enemyManager = new EnemyManager(mapLoader, moneyManager);
         waveManager = new WaveManager(enemyManager);
         bulletManager = new BulletManager();
-        towerManager = new TowerManager();
+        towerManager = new TowerManager(moneyManager);
 
     }
 
@@ -51,5 +50,13 @@ public class GameLogic {
 
     public WaveManager getWaveManager() {
         return waveManager;
+    }
+
+    public MoneyManager getMoneyManager() {
+        return moneyManager;
+    }
+
+    public void setMoneyManager(MoneyManager moneyManager) {
+        this.moneyManager = moneyManager;
     }
 }

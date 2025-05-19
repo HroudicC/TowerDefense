@@ -11,6 +11,7 @@ public class Tower  {
     private int width, height;
     private int range;
     private int damage;
+    private int moneyCost;
     private Color color;
 
     private double bulletSpeed = 20;
@@ -20,7 +21,7 @@ public class Tower  {
     private Enemy currentEnemy;
 
 
-    public Tower(int x, int y, int width, int height, int range, int damage, Color color) {
+    public Tower(int x, int y, int width, int height, int range, int damage, Color color, int moneyCost) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -28,6 +29,7 @@ public class Tower  {
         this.range = range;
         this.damage = damage;
         this.color = color;
+        this.moneyCost = moneyCost;
         this.lastShotTime = 0;
     }
 
@@ -78,6 +80,10 @@ public class Tower  {
 
     public int getY() {
         return y;
+    }
+
+    public int getMoneyCost() {
+        return moneyCost;
     }
 
     public void draw(Graphics g) {

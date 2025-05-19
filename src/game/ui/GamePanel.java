@@ -24,7 +24,7 @@ public class GamePanel extends JPanel {
     private Button lobbyButton, startButton;
     private TowerType selectedTowerType = null;
     private Button tower1Button, tower2Button, tower3Button;
-    private Label waveLabel;
+    private Label waveLabel, moneyLabel;
     private Timer timer;
 
     public GamePanel(MainWindow mainWindow, MapLoader mapLoader) {
@@ -74,6 +74,9 @@ public class GamePanel extends JPanel {
 
         waveLabel = new Label("WAVE: " + 0, 0, 750, 400,125);
         add(waveLabel);
+
+        moneyLabel = new Label("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$", 400, 750, 400,125);
+        add(moneyLabel);
     }
 
     public void initializeMouseListener(){
@@ -97,8 +100,11 @@ public class GamePanel extends JPanel {
                     return;
                 }
                 Tower newTower = gameLogic.getTowerManager().createTower(selectedTowerType, gridX, gridY, tileSize);
-                gameLogic.getTowerManager().addTower(newTower);
-                System.out.println("Přidána věž: " + selectedTowerType);
+                boolean bought = gameLogic.getTowerManager().addTower(newTower);
+                if (bought) {
+                    System.out.println("Přidána věž: " + selectedTowerType);
+                }
+                updateMoneyLabel();
                 selectedTowerType = null;
             }
         });
@@ -106,6 +112,10 @@ public class GamePanel extends JPanel {
 
     public void updateWaveLabel(){
         waveLabel.setText("WAVE: " + gameLogic.getWaveManager().getCurrentWaveNumber());
+    }
+
+    public void updateMoneyLabel(){
+        moneyLabel.setText("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$");
     }
 
     @Override
