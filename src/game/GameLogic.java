@@ -48,4 +48,8 @@ public class GameLogic {
     public TowerManager getTowerManager() {
         return towerManager;
     }
+
+    public WaveManager getWaveManager() {
+        return waveManager;
+    }
 }

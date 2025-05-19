@@ -47,7 +47,7 @@ public class WaveManager {
         if (currentWave.isFinished() && enemyManager.getEnemies().isEmpty()) {
             waveActive = false;
             waitingForNextWave = true;
-            System.out.println("Vlna " + (currentWaveIndex + 1) + " dokoncena");
+            System.out.println("Vlna " + getCurrentWaveNumber() + " dokoncena");
             currentWaveIndex++;
         }
 
@@ -65,7 +65,8 @@ public class WaveManager {
             waveActive = true;
             waitingForNextWave = false;
             lastSpawnTime = System.currentTimeMillis();
-            System.out.println("Spouštím vlnu " + (currentWaveIndex + 1));        }
+            System.out.println("Spouštím vlnu " + getCurrentWaveNumber());
+        }
     }
 
     public int getCurrentWaveNumber() {

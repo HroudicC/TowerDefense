@@ -3,6 +3,8 @@ package game.ui;
 import game.*;
 import game.entities.Tower;
 import game.entities.TowerType;
+import game.entities.Wave;
+import game.managers.WaveManager;
 import game.map.MapLoader;
 import game.map.PanelType;
 import game.map.TileType;
@@ -22,6 +24,7 @@ public class GamePanel extends JPanel {
     private Button lobbyButton, startButton;
     private TowerType selectedTowerType = null;
     private Button tower1Button, tower2Button, tower3Button;
+    private Label waveLabel;
     private Timer timer;
 
     public GamePanel(MainWindow mainWindow, MapLoader mapLoader) {
@@ -36,7 +39,7 @@ public class GamePanel extends JPanel {
         setVisible(true);
 
         initializeTimer();
-        initializeButtons();
+        initializeUI();
         initializeMouseListener();
 
     }
@@ -49,8 +52,11 @@ public class GamePanel extends JPanel {
         timer.start();
     }
 
-    public void initializeButtons(){
-        startButton = new Button("START", 1200, 750, 200, 125, e -> gameLogic.startNextWave());
+    public void initializeUI(){
+        startButton = new Button("START", 1200, 750, 200, 125, e -> {
+            gameLogic.startNextWave();
+            updateWaveLabel();
+        });
         add(startButton);
 
         lobbyButton = new Button("LOBBY", 1400, 750, 200, 125, e -> mainWindow.switchPanel(PanelType.LOBBY_PANEL));
@@ -64,6 +70,10 @@ public class GamePanel extends JPanel {
 
         tower3Button = new Button("BOXER", 1200, 200, 200, 200, e -> selectedTowerType = TowerType.BOXER);
         add(tower3Button);
+
+
+        waveLabel = new Label("WAVE: " + 0, 0, 750, 400,125);
+        add(waveLabel);
     }
 
     public void initializeMouseListener(){
@@ -92,6 +102,10 @@ public class GamePanel extends JPanel {
                 selectedTowerType = null;
             }
         });
+    }
+
+    public void updateWaveLabel(){
+        waveLabel.setText("WAVE: " + gameLogic.getWaveManager().getCurrentWaveNumber());
     }
 
     @Override
