@@ -1,9 +1,11 @@
 package game.managers;
 
+import game.GameLogic;
 import game.entities.Bullet;
 import game.map.MapLoader;
 import game.entities.Enemy;
 import game.entities.EnemyType;
+import game.ui.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,10 +15,14 @@ public class EnemyManager {
     private ArrayList<Enemy> enemies;
     private MapLoader mapLoader;
     private MoneyManager moneyManager;
+    private LifeManager lifeManager;
+    private GamePanel gamePanel;
 
-    public EnemyManager(MapLoader mapLoader, MoneyManager moneyManager) {
+    public EnemyManager(MapLoader mapLoader, MoneyManager moneyManager, LifeManager lifeManager, GamePanel gamePanel) {
         this.mapLoader = mapLoader;
         this.moneyManager = moneyManager;
+        this.lifeManager = lifeManager;
+        this.gamePanel = gamePanel;
         enemies = new ArrayList<>();
     }
 
@@ -67,10 +73,13 @@ public class EnemyManager {
             enemy.update();
             if (enemy.hasReachedEnd()) {
                 System.out.println("Nepritel dojel do cile");
+                lifeManager.loseLife(15);
+                gamePanel.updateHealthLabel();
                 enemiesToRemove.add(enemy);
             } else if (enemy.isDead()){
                 moneyManager.addMoney(enemy.getMoneyReward());
                 enemiesToRemove.add(enemy);
+                gamePanel.updateMoneyLabel();
             }
         }
         enemies.removeAll(enemiesToRemove);

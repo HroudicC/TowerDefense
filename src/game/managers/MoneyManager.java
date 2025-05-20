@@ -14,7 +14,7 @@ public class MoneyManager {
 
     public boolean spendMoney(int amount) {
        if (money == 0) {
-           System.out.println("Nemas ani na jidlo, nemuzes utracet!.");
+           System.out.println("Nemas penize na utraceni!");
            return false;
        } else if (money >= amount) {
            money -= amount;
@@ -26,9 +26,5 @@ public class MoneyManager {
 
     public int getMoney() {
         return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 }

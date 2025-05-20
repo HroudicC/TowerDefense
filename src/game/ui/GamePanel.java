@@ -3,8 +3,6 @@ package game.ui;
 import game.*;
 import game.entities.Tower;
 import game.entities.TowerType;
-import game.entities.Wave;
-import game.managers.WaveManager;
 import game.map.MapLoader;
 import game.map.PanelType;
 import game.map.TileType;
@@ -24,13 +22,13 @@ public class GamePanel extends JPanel {
     private Button lobbyButton, startButton;
     private TowerType selectedTowerType = null;
     private Button tower1Button, tower2Button, tower3Button;
-    private Label waveLabel, moneyLabel;
+    private Label waveLabel, moneyLabel, healthLabel;
     private Timer timer;
 
     public GamePanel(MainWindow mainWindow, MapLoader mapLoader) {
         this.mainWindow = mainWindow;
         this.mapLoader = mapLoader;
-        gameLogic = new GameLogic(mapLoader);
+        gameLogic = new GameLogic(mapLoader, this);
 
         setLayout(null);
         setSize(1600, 900);
@@ -77,6 +75,9 @@ public class GamePanel extends JPanel {
 
         moneyLabel = new Label("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$", 400, 750, 400,125);
         add(moneyLabel);
+
+        healthLabel = new Label("HEALTH: " + gameLogic.getLifeManager().getLives(), 800, 750, 400,125);
+        add(healthLabel);
     }
 
     public void initializeMouseListener(){
@@ -116,6 +117,10 @@ public class GamePanel extends JPanel {
 
     public void updateMoneyLabel(){
         moneyLabel.setText("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$");
+    }
+
+    public void updateHealthLabel(){
+        healthLabel.setText("HEALTH: " + gameLogic.getLifeManager().getLives());
     }
 
     @Override

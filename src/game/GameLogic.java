@@ -2,7 +2,9 @@ package game;
 
 import game.managers.*;
 import game.map.MapLoader;
+import game.ui.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GameLogic {
@@ -14,11 +16,16 @@ public class GameLogic {
     private BulletManager bulletManager;
     private TowerManager towerManager;
     private MoneyManager moneyManager;
+    private LifeManager lifeManager;
+    private GamePanel gamePanel;
 
-    public GameLogic(MapLoader mapLoader) {
+    public GameLogic(MapLoader mapLoader, GamePanel gamePanel) {
         this.mapLoader = mapLoader;
+        this.gamePanel = gamePanel;
+
         moneyManager = new MoneyManager();
-        enemyManager = new EnemyManager(mapLoader, moneyManager);
+        lifeManager = new LifeManager(100);
+        enemyManager = new EnemyManager(mapLoader, moneyManager, lifeManager, gamePanel);
         waveManager = new WaveManager(enemyManager);
         bulletManager = new BulletManager();
         towerManager = new TowerManager(moneyManager);
@@ -30,6 +37,12 @@ public class GameLogic {
        enemyManager.update();
        towerManager.update(System.currentTimeMillis(), enemyManager, bulletManager);
        bulletManager.update(enemyManager);
+
+       if (lifeManager.isGameOver()){
+           System.out.println("KONEC HRY");
+           JOptionPane.showMessageDialog(null, "KONEC HRY");
+           System.exit(0);
+       }
     }
 
     public void startNextWave(){
@@ -56,7 +69,7 @@ public class GameLogic {
         return moneyManager;
     }
 
-    public void setMoneyManager(MoneyManager moneyManager) {
-        this.moneyManager = moneyManager;
+    public LifeManager getLifeManager() {
+        return lifeManager;
     }
 }
