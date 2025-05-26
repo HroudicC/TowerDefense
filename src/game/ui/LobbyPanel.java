@@ -6,11 +6,11 @@ import javax.swing.*;
 
 public class LobbyPanel extends JPanel {
 
-    MainWindow mainWindow;
+    private MainWindow mainWindow;
 
-    Button gameButton;
-    Button tutorialButton;
-    Button exitButton;
+    private Button gameButton;
+    private Button tutorialButton;
+    private Button exitButton;
 
     public LobbyPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;

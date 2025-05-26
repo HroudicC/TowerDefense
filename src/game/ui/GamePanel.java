@@ -1,6 +1,8 @@
 package game.ui;
 
 import game.*;
+import game.config.TowerConfigLoader;
+import game.config.TowerInfo;
 import game.entities.Tower;
 import game.entities.TowerType;
 import game.map.MapLoader;
@@ -12,6 +14,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.util.HashMap;
 
 public class GamePanel extends JPanel {
 
@@ -21,14 +24,18 @@ public class GamePanel extends JPanel {
 
     private Button lobbyButton, startButton;
     private TowerType selectedTowerType = null;
-    private Button tower1Button, tower2Button, tower3Button;
-    private Label waveLabel, moneyLabel, healthLabel;
+    private Button tower1Button, tower2Button, tower3Button, tower4Button, tower5Button, tower6Button;
+    private Label waveLabel, moneyLabel, healthLabel, storeLabel;
+    private JTextArea informationTextArea;
     private Timer timer;
+
+    private HashMap<String, TowerInfo> towerConfigs;
 
     public GamePanel(MainWindow mainWindow, MapLoader mapLoader) {
         this.mainWindow = mainWindow;
         this.mapLoader = mapLoader;
         gameLogic = new GameLogic(mapLoader, this);
+        towerConfigs = TowerConfigLoader.loadTowerConfigs("src/game/config/TowerTypeInfo");
 
         setLayout(null);
         setSize(1600, 900);
@@ -39,7 +46,7 @@ public class GamePanel extends JPanel {
         initializeTimer();
         initializeUI();
         initializeMouseListener();
-
+        initializeInformationTextArea();
     }
 
     public void initializeTimer(){
@@ -48,6 +55,18 @@ public class GamePanel extends JPanel {
             repaint();
         });
         timer.start();
+    }
+
+    public void initializeInformationTextArea(){
+        informationTextArea = new JTextArea();
+        informationTextArea.setForeground(Color.BLACK);
+        informationTextArea.setBackground(Color.LIGHT_GRAY);
+        informationTextArea.setFont(new Font("Arial", Font.BOLD, 20));
+        informationTextArea.setBounds(900,750,300,125);
+        informationTextArea.setEditable(false);
+        informationTextArea.setLineWrap(true);
+        informationTextArea.setWrapStyleWord(true);
+        add(informationTextArea);
     }
 
     public void initializeUI(){
@@ -60,24 +79,44 @@ public class GamePanel extends JPanel {
         lobbyButton = new Button("LOBBY", 1400, 750, 200, 125, e -> mainWindow.switchPanel(PanelType.LOBBY_PANEL));
         add(lobbyButton);
 
-        tower1Button = new Button("BASIC", 1200, 0, 200, 200, e -> selectedTowerType = TowerType.BASIC);
+        tower1Button = new Button("BASIC", 1200, 150, 200, 200, e -> selectedTowerType = TowerType.BASIC);
+        tower1Button.addMouseListener(createTowerInfoListener("BASIC"));
         add(tower1Button);
 
-        tower2Button = new Button("SNIPER", 1400, 0, 200, 200, e -> selectedTowerType = TowerType.SNIPER);
+        tower2Button = new Button("SNIPER", 1200, 350, 200, 200, e -> selectedTowerType = TowerType.SNIPER);
+        tower2Button.addMouseListener(createTowerInfoListener("SNIPER"));
         add(tower2Button);
 
-        tower3Button = new Button("BOXER", 1200, 200, 200, 200, e -> selectedTowerType = TowerType.BOXER);
+        tower3Button = new Button("CANNON", 1200, 550, 200, 200, e -> selectedTowerType = TowerType.CANNON);
+        tower3Button.addMouseListener(createTowerInfoListener("CANNON"));
         add(tower3Button);
 
+        tower4Button = new Button("LASER", 1400, 150, 200, 200, e -> selectedTowerType = TowerType.LASER);
+        tower4Button.addMouseListener(createTowerInfoListener("LASER"));
+        add(tower4Button);
 
-        waveLabel = new Label("WAVE: " + 0, 0, 750, 400,125);
+        tower5Button = new Button("ROCKET", 1400, 350, 200, 200, e -> selectedTowerType = TowerType.ROCKET);
+        tower5Button.addMouseListener(createTowerInfoListener("ROCKET"));
+        add(tower5Button);
+
+        tower6Button = new Button("PLASMA", 1400, 550, 200, 200, e -> selectedTowerType = TowerType.PLASMA);
+        tower6Button.addMouseListener(createTowerInfoListener("PLASMA"));
+        add(tower6Button);
+
+
+        waveLabel = new Label("WAVE: " + 0, 0, 750, 300,125);
         add(waveLabel);
 
-        moneyLabel = new Label("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$", 400, 750, 400,125);
+        moneyLabel = new Label("MONEY: " + gameLogic.getMoneyManager().getMoney() + "$", 300, 750, 300,125);
         add(moneyLabel);
 
-        healthLabel = new Label("HEALTH: " + gameLogic.getLifeManager().getLives(), 800, 750, 400,125);
+        healthLabel = new Label("HEALTH: " + gameLogic.getLifeManager().getLives(), 600, 750, 300,125);
         add(healthLabel);
+
+
+        storeLabel = new Label("STORE", 1200,0,400,150);
+        storeLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        add(storeLabel);
     }
 
     public void initializeMouseListener(){
@@ -109,6 +148,22 @@ public class GamePanel extends JPanel {
                 selectedTowerType = null;
             }
         });
+    }
+
+    private MouseAdapter createTowerInfoListener(String towerType){
+        return new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                TowerInfo info = towerConfigs.get(towerType);
+                if (info != null) {
+                    informationTextArea.setText(info.getInfo());
+                }
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                informationTextArea.setText("");
+            }
+        };
     }
 
     public void updateWaveLabel(){

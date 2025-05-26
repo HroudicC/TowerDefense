@@ -8,13 +8,13 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
 
-    CardLayout cardLayout;
-    JPanel container;
+    private CardLayout cardLayout;
+    private JPanel container;
 
-    LobbyPanel lobbyPanel;
-    TutorialPanel tutorialPanel;
-    GamePanel gamePanel;
-    MapLoader mapLoader;
+    private LobbyPanel lobbyPanel;
+    private TutorialPanel tutorialPanel;
+    private GamePanel gamePanel;
+    private MapLoader mapLoader;
 
     public MainWindow(){
         setTitle("Tower Defense");

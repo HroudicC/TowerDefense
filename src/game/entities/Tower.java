@@ -14,14 +14,14 @@ public class Tower  {
     private int moneyCost;
     private Color color;
 
-    private double bulletSpeed = 20;
+    private double bulletSpeed = 27;
     private long lastShotTime;
-    private long cooldown = 1000;
+    private long cooldown;
 
     private Enemy currentEnemy;
 
 
-    public Tower(int x, int y, int width, int height, int range, int damage, Color color, int moneyCost) {
+    public Tower(int x, int y, int width, int height, int range, int damage, Color color,long cooldown, int moneyCost) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -29,6 +29,7 @@ public class Tower  {
         this.range = range;
         this.damage = damage;
         this.color = color;
+        this.cooldown = cooldown;
         this.moneyCost = moneyCost;
         this.lastShotTime = 0;
     }

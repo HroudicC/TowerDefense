@@ -2,5 +2,5 @@ package game.entities;
 
 public enum TowerType {
 
-    BASIC, SNIPER, BOXER
+    BASIC, SNIPER, CANNON, LASER, ROCKET, PLASMA
 }

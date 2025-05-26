@@ -2,5 +2,5 @@ package game.entities;
 
 public enum EnemyType {
 
-    BASIC, SPEED, TANK
+    BASIC, SPEED, TANK, ELITE
 }

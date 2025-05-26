@@ -1,7 +1,10 @@
 package game.map;
 
+import game.assets.AssetLoader;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,12 +13,25 @@ import java.util.ArrayList;
 public class MapLoader extends JPanel {
 
     private final int TILE_SIZE = 75;
-    ArrayList<TileType[]> mapByRows = new ArrayList<>();
+    private ArrayList<TileType[]> mapByRows = new ArrayList<>();
+
+    private BufferedImage grassTile, startPath, endPath, horizontalPath, verticalPath, leftToDownPath, leftToUpPath, rightToDownPath, rightToUpPath;
 
 
     public MapLoader() {
         loadMap();
         setOpaque(true);
+
+        grassTile = AssetLoader.loadImage("src/game/assets/Grass.png");
+        startPath = AssetLoader.loadImage("src/game/assets/Start.png");
+        endPath = AssetLoader.loadImage("src/game/assets/EndPath.png");
+
+        horizontalPath = AssetLoader.loadImage("src/game/assets/HorizontalPath.png");
+        verticalPath = AssetLoader.loadImage("src/game/assets/VerticalPath.png");
+        leftToDownPath = AssetLoader.loadImage("src/game/assets/LeftToDownPath.png");
+        leftToUpPath = AssetLoader.loadImage("src/game/assets/LeftToUpPath.png");
+        rightToDownPath = AssetLoader.loadImage("src/game/assets/RightToDownPath.png");
+        rightToUpPath = AssetLoader.loadImage("src/game/assets/RightToUpPath.png");
     }
 
     public boolean loadMap() {
@@ -33,9 +49,14 @@ public class MapLoader extends JPanel {
                 for (int i = 0; i < data.length; i++) {
                     switch (data[i]) {
                         case "0": row[i] = TileType.GRASS; break;
-                        case "1": row[i] = TileType.PATH; break;
-                        case "2": row[i] = TileType.START; break;
-                        case "3": row[i] = TileType.END; break;
+                        case "1": row[i] = TileType.START; break;
+                        case "2": row[i] = TileType.END; break;
+                        case "3": row[i] = TileType.HORIZONTAL_PATH; break;
+                        case "4": row[i] = TileType.VERTICAL_PATH; break;
+                        case "5": row[i] = TileType.LEFT_TO_DOWN_PATH; break;
+                        case "6": row[i] = TileType.LEFT_TO_UP_PATH; break;
+                        case "7": row[i] = TileType.RIGHT_TO_DOWN_PATH; break;
+                        case "8": row[i] = TileType.RIGHT_TO_UP_PATH; break;
                         default:  row[i] = TileType.GRASS; break;
                     }
                 }
@@ -56,21 +77,41 @@ public class MapLoader extends JPanel {
             TileType[] tileRow = mapByRows.get(row);
             for (int col = 0; col < tileRow.length; col++) {
                 TileType type = tileRow[col];
+                BufferedImage tileImage = null;
                 switch (type) {
                     case TileType.GRASS:
-                        g.setColor(Color.GREEN);
-                        break;
-                    case TileType.PATH:
-                        g.setColor(new Color(84, 89, 90));
+                        tileImage = grassTile;
                         break;
                     case TileType.START:
-                        g.setColor(Color.BLUE);
+                        tileImage = startPath;
                         break;
                     case TileType.END:
-                        g.setColor(Color.RED);
+                        tileImage = endPath;
+                        break;
+                    case TileType.HORIZONTAL_PATH:
+                        tileImage = horizontalPath;
+                        break;
+                    case TileType.VERTICAL_PATH:
+                        tileImage = verticalPath;
+                        break;
+                    case TileType.LEFT_TO_DOWN_PATH:
+                        tileImage = leftToDownPath;
+                        break;
+                    case TileType.LEFT_TO_UP_PATH:
+                        tileImage = leftToUpPath;
+                        break;
+                    case TileType.RIGHT_TO_DOWN_PATH:
+                        tileImage = rightToDownPath;
+                        break;
+                    case TileType.RIGHT_TO_UP_PATH:
+                        tileImage = rightToUpPath;
                         break;
                 }
-                g.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                if(tileImage != null) {
+                    g.drawImage(tileImage, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+                } else {
+                    g.fillRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                }
                 g.setColor(Color.BLACK);
                 g.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }

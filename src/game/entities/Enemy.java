@@ -42,13 +42,16 @@ public class Enemy extends AbstractEntity {
 
         TileType tile = mapLoader.getMapByRows().get(y)[x];
 
-        if (tile != TileType.PATH && tile != TileType.START && tile != TileType.END) {
+        if (tile != TileType.HORIZONTAL_PATH && tile != TileType.VERTICAL_PATH
+                && tile != TileType.LEFT_TO_DOWN_PATH && tile != TileType.LEFT_TO_UP_PATH
+                && tile != TileType.RIGHT_TO_DOWN_PATH && tile != TileType.RIGHT_TO_UP_PATH
+                && tile != TileType.START && tile != TileType.END) {
             return false;
         }
         visited[y][x] = true;
         path.add(new Point(x, y));
 
-        if (new Point(x, y).equals(end)) {
+        if (x == end.x && y == end.y) {
             return true;
         }
 

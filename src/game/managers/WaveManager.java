@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class WaveManager {
 
     private ArrayList<Wave> waves;
-    private int currentWaveIndex;
+    private int currentWaveIndex, totalWaves;
     private long lastSpawnTime;
     private EnemyManager enemyManager;
 
@@ -16,10 +16,11 @@ public class WaveManager {
     private boolean waveActive = false;
 
 
-    public WaveManager(EnemyManager enemyManager) {
+    public WaveManager(EnemyManager enemyManager, int totalWaves) {
         this.enemyManager = enemyManager;
         waves = new ArrayList<>();
         currentWaveIndex = 0;
+        this.totalWaves = totalWaves;
         lastSpawnTime = System.currentTimeMillis();
 
         initialize();
@@ -54,10 +55,12 @@ public class WaveManager {
     }
 
     private void initialize(){
-        waves.add(new Wave(5, EnemyType.BASIC, 2000));
-        waves.add(new Wave(10,EnemyType.SPEED, 1800));
-        waves.add(new Wave(7,EnemyType.TANK, 2000));
-        waves.add(new Wave(10, EnemyType.SPEED, 1800));
+        waves.add(new Wave(5, EnemyType.BASIC, 1200));
+        waves.add(new Wave(8,EnemyType.BASIC, 1000));
+        waves.add(new Wave(10,EnemyType.SPEED, 800));
+        waves.add(new Wave(4, EnemyType.TANK, 1500));
+        waves.add(new Wave(6, EnemyType.ELITE, 2000));
+        waves.add(new Wave(10,EnemyType.ELITE, 700));
     }
 
     public void startNextWave() {
@@ -75,5 +78,9 @@ public class WaveManager {
 
     public int getCurrentWaveIndex() {
         return currentWaveIndex;
+    }
+
+    public int getTotalWaves() {
+        return totalWaves;
     }
 }

@@ -26,7 +26,7 @@ public class GameLogic {
         moneyManager = new MoneyManager();
         lifeManager = new LifeManager(100);
         enemyManager = new EnemyManager(mapLoader, moneyManager, lifeManager, gamePanel);
-        waveManager = new WaveManager(enemyManager);
+        waveManager = new WaveManager(enemyManager, 7);
         bulletManager = new BulletManager();
         towerManager = new TowerManager(moneyManager);
 
@@ -40,7 +40,21 @@ public class GameLogic {
 
        if (lifeManager.isGameOver()){
            System.out.println("KONEC HRY");
-           JOptionPane.showMessageDialog(null, "KONEC HRY");
+           JOptionPane.showMessageDialog(
+                   gamePanel,
+                   "Prohrál jsi :(",
+                   "Prohra",
+                   JOptionPane.INFORMATION_MESSAGE);
+           System.exit(0);
+       }
+
+       if (isVictory()){
+           System.out.println("VYHRA");
+           JOptionPane.showMessageDialog(
+                   gamePanel,
+                   "Vyhrál jsi! :)",
+                   "Výhra",
+                   JOptionPane.INFORMATION_MESSAGE);
            System.exit(0);
        }
     }
@@ -48,6 +62,13 @@ public class GameLogic {
     public void startNextWave(){
             waveManager.startNextWave();
             System.out.println("Vlna" + waveManager.getCurrentWaveNumber());
+    }
+
+    public boolean isVictory(){
+        int totalWaves = waveManager.getTotalWaves();
+        int currentWave = waveManager.getCurrentWaveNumber();
+
+        return currentWave >= totalWaves;
     }
 
     public void draw(Graphics g) {

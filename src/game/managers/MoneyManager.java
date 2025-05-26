@@ -5,7 +5,7 @@ public class MoneyManager {
     private int money;
 
     public MoneyManager() {
-        this.money = 100;
+        this.money = 500;
     }
 
     public void addMoney(int amount) {

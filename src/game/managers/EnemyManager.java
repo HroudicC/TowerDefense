@@ -1,6 +1,5 @@
 package game.managers;
 
-import game.GameLogic;
 import game.entities.Bullet;
 import game.map.MapLoader;
 import game.entities.Enemy;
@@ -42,16 +41,22 @@ public class EnemyManager {
                 moneyReward = 50;
             }
             case EnemyType.SPEED -> {
-                speed = 13;
-                health = 25;
+                speed = 16;
+                health = 30;
                 enemyColor = Color.YELLOW;
-                moneyReward = 50;
+                moneyReward = 60;
             }
             case EnemyType.TANK -> {
                 speed = 6;
-                health = 100;
+                health = 120;
                 enemyColor = Color.BLACK;
-                moneyReward = 50;
+                moneyReward = 80;
+            }
+            case EnemyType.ELITE -> {
+                speed = 7;
+                health = 300;
+                enemyColor = Color.RED;
+                moneyReward = 150;
             }
             default -> {
                 speed = 8;
@@ -102,7 +107,7 @@ public class EnemyManager {
     }
 
     public void checkBulletCollision(Bullet bullet) {
-        double collisionThreshold = 35;
+        double collisionThreshold = 40;
         for (Enemy enemy : enemies) {
 
             int enemyCenterX = enemy.getX() + enemy.getWidth() / 2;
