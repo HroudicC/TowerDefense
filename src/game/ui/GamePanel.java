@@ -61,7 +61,7 @@ public class GamePanel extends JPanel {
         informationTextArea = new JTextArea();
         informationTextArea.setForeground(Color.BLACK);
         informationTextArea.setBackground(Color.LIGHT_GRAY);
-        informationTextArea.setFont(new Font("Arial", Font.BOLD, 20));
+        informationTextArea.setFont(new Font("Arial", Font.BOLD, 18));
         informationTextArea.setBounds(900,750,300,125);
         informationTextArea.setEditable(false);
         informationTextArea.setLineWrap(true);

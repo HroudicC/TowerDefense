@@ -40,16 +40,25 @@ public class LobbyPanel extends JPanel {
          gameButton = new Button("GAME",300,450,400,200, e -> mainWindow.switchPanel(PanelType.GAME_PANEL));
          gameButton.setIcon(new ImageIcon(gameImage));
          gameButton.setBorder(null);
+         gameButton.setFocusPainted(false);
+         gameButton.setOpaque(false);
+         gameButton.setContentAreaFilled(false);
         add(gameButton);
 
          tutorialButton = new Button("TUTORIAL",900,450,400,200, e -> mainWindow.switchPanel(PanelType.TUTORIAL_PANEL));
          tutorialButton.setIcon(new ImageIcon(tutorialImage));
          tutorialButton.setBorder(null);
+         tutorialButton.setFocusPainted(false);
+         tutorialButton.setOpaque(false);
+         tutorialButton.setContentAreaFilled(false);
         add(tutorialButton);
 
          exitButton = new Button("EXIT",650,700,300,100, e -> System.exit(0));
          exitButton.setIcon(new ImageIcon(exitImage));
          exitButton.setBorder(null);
+         exitButton.setFocusPainted(false);
+         exitButton.setOpaque(false);
+         exitButton.setContentAreaFilled(false);
         add(exitButton);
 
     }

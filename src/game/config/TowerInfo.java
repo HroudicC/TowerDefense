@@ -25,40 +25,20 @@ public class TowerInfo {
         this.towerType = towerType;
     }
 
-    public int getCost() {
-        return cost;
-    }
-
     public void setCost(int cost) {
         this.cost = cost;
-    }
-
-    public int getRange() {
-        return range;
     }
 
     public void setRange(int range) {
         this.range = range;
     }
 
-    public int getDamage() {
-        return damage;
-    }
-
     public void setDamage(int damage) {
         this.damage = damage;
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
-
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
