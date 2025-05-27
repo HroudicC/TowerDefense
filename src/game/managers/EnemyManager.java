@@ -42,21 +42,27 @@ public class EnemyManager {
             }
             case EnemyType.SPEED -> {
                 speed = 16;
-                health = 30;
+                health = 40;
                 enemyColor = Color.YELLOW;
                 moneyReward = 60;
             }
             case EnemyType.TANK -> {
                 speed = 6;
-                health = 120;
+                health = 200;
                 enemyColor = Color.BLACK;
                 moneyReward = 80;
             }
+            case EnemyType.PHANTOM -> {
+                speed = 13;
+                health = 140;
+                enemyColor = Color.GRAY;
+                moneyReward = 100;
+            }
             case EnemyType.ELITE -> {
                 speed = 7;
-                health = 300;
+                health = 320;
                 enemyColor = Color.RED;
-                moneyReward = 150;
+                moneyReward = 125;
             }
             default -> {
                 speed = 8;
@@ -66,7 +72,7 @@ public class EnemyManager {
             }
         }
 
-        Enemy enemy = new Enemy(0, 0, width, height, speed, health, enemyColor, moneyReward, mapLoader);
+        Enemy enemy = new Enemy(0, 0, width, height, speed, health, enemyType, enemyColor, moneyReward, mapLoader);
         enemies.add(enemy);
         System.out.println("Spawnnul se nepřítel typu " + enemyType + ". Celkový počet: " + enemies.size());
 

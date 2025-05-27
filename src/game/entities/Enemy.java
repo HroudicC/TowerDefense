@@ -1,9 +1,11 @@
 package game.entities;
 
+import game.assets.AssetLoader;
 import game.map.MapLoader;
 import game.map.TileType;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Enemy extends AbstractEntity {
@@ -17,13 +19,19 @@ public class Enemy extends AbstractEntity {
     private boolean pathCalculated = false;
     private Direction movementDirection;
 
-    public Enemy(int x, int y, int width, int height, int speed, int health, Color enemyColor, int moneyReward, MapLoader mapLoader) {
+    private BufferedImage enemyImage;
+    private EnemyType enemyType;
+
+    public Enemy(int x, int y, int width, int height, int speed, int health, EnemyType enemyType, Color enemyColor, int moneyReward, MapLoader mapLoader) {
         super(x, y, width, height);
         this.speed = speed;
         this.health = health;
+        this.enemyType = enemyType;
         this.enemyColor = enemyColor;
         this.moneyReward = moneyReward;
         this.mapLoader = mapLoader;
+
+        enemyImage = AssetLoader.loadImage(enemyType.getImagePath());
     }
 
     /**
@@ -178,7 +186,11 @@ public class Enemy extends AbstractEntity {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(enemyColor);
-        g.fillOval(x, y, getWidth(), getHeight());
+        if (enemyImage != null) {
+            g.drawImage(enemyImage,x,y,null);
+        }else{
+            g.setColor(enemyColor);
+            g.fillOval(x, y, getWidth(), getHeight());
+        }
     }
 }

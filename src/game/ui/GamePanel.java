@@ -99,8 +99,8 @@ public class GamePanel extends JPanel {
         tower5Button.addMouseListener(createTowerInfoListener("ROCKET"));
         add(tower5Button);
 
-        tower6Button = new Button("PLASMA", 1400, 550, 200, 200, e -> selectedTowerType = TowerType.PLASMA);
-        tower6Button.addMouseListener(createTowerInfoListener("PLASMA"));
+        tower6Button = new Button("MINIGUN", 1400, 550, 200, 200, e -> selectedTowerType = TowerType.MINIGUN);
+        tower6Button.addMouseListener(createTowerInfoListener("MINIGUN"));
         add(tower6Button);
 
 

@@ -26,7 +26,7 @@ public class GameLogic {
         moneyManager = new MoneyManager();
         lifeManager = new LifeManager(100);
         enemyManager = new EnemyManager(mapLoader, moneyManager, lifeManager, gamePanel);
-        waveManager = new WaveManager(enemyManager, 7);
+        waveManager = new WaveManager(enemyManager, 10);
         bulletManager = new BulletManager();
         towerManager = new TowerManager(moneyManager);
 

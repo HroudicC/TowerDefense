@@ -22,16 +22,16 @@ public class MapLoader extends JPanel {
         loadMap();
         setOpaque(true);
 
-        grassTile = AssetLoader.loadImage("src/game/assets/Grass.png");
-        startPath = AssetLoader.loadImage("src/game/assets/Start.png");
-        endPath = AssetLoader.loadImage("src/game/assets/EndPath.png");
+        grassTile = AssetLoader.loadImage("src/game/assets/map/Grass.png");
+        startPath = AssetLoader.loadImage("src/game/assets/map/PathStart.png");
+        endPath = AssetLoader.loadImage("src/game/assets/map/PathEnd.png");
 
-        horizontalPath = AssetLoader.loadImage("src/game/assets/HorizontalPath.png");
-        verticalPath = AssetLoader.loadImage("src/game/assets/VerticalPath.png");
-        leftToDownPath = AssetLoader.loadImage("src/game/assets/LeftToDownPath.png");
-        leftToUpPath = AssetLoader.loadImage("src/game/assets/LeftToUpPath.png");
-        rightToDownPath = AssetLoader.loadImage("src/game/assets/RightToDownPath.png");
-        rightToUpPath = AssetLoader.loadImage("src/game/assets/RightToUpPath.png");
+        horizontalPath = AssetLoader.loadImage("src/game/assets/map/PathHorizontal.png");
+        verticalPath = AssetLoader.loadImage("src/game/assets/map/PathVertical.png");
+        leftToDownPath = AssetLoader.loadImage("src/game/assets/map/PathLeftToDown.png");
+        leftToUpPath = AssetLoader.loadImage("src/game/assets/map/PathLeftToUp.png");
+        rightToDownPath = AssetLoader.loadImage("src/game/assets/map/PathRightToDown.png");
+        rightToUpPath = AssetLoader.loadImage("src/game/assets/map/PathRightToUp.png");
     }
 
     public boolean loadMap() {

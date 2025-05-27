@@ -56,11 +56,14 @@ public class WaveManager {
 
     private void initialize(){
         waves.add(new Wave(5, EnemyType.BASIC, 1200));
-        waves.add(new Wave(8,EnemyType.BASIC, 1000));
-        waves.add(new Wave(10,EnemyType.SPEED, 800));
-        waves.add(new Wave(4, EnemyType.TANK, 1500));
-        waves.add(new Wave(6, EnemyType.ELITE, 2000));
-        waves.add(new Wave(10,EnemyType.ELITE, 700));
+        waves.add(new Wave(8,EnemyType.BASIC, 700));
+        waves.add(new Wave(8,EnemyType.SPEED, 800));
+        waves.add(new Wave(10,EnemyType.SPEED, 500));
+        waves.add(new Wave(5, EnemyType.TANK, 1500));
+        waves.add(new Wave(8, EnemyType.TANK, 800));
+        waves.add(new Wave(5, EnemyType.PHANTOM, 1500));
+        waves.add(new Wave(10, EnemyType.PHANTOM, 1000));
+        waves.add(new Wave(15,EnemyType.ELITE, 700));
     }
 
     public void startNextWave() {

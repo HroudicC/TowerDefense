@@ -2,7 +2,6 @@ package game.managers;
 
 import game.entities.Tower;
 import game.entities.TowerType;
-import game.ui.GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,20 +27,18 @@ public class TowerManager {
         return false;
     }
 
-    public Tower createTower(TowerType type, int gridX, int gridY, int tileSize) {
-        int width = 50, height = 50;
+    public Tower createTower(TowerType towerType, int gridX, int gridY, int tileSize) {
+        int width = 75, height = 75;
         int range = 150;
         int damage = 25;
         int moneyCost = 50;
         long cooldown = 1000;
         Color color = Color.GRAY;
 
-        switch (type) {
+        switch (towerType) {
             case BASIC:
                 color = Color.BLUE;
                 range = 85;
-                width = 50;
-                height = 50;
                 damage = 13;
                 cooldown = 1000;
                 moneyCost = 100;
@@ -49,17 +46,13 @@ public class TowerManager {
             case SNIPER:
                 color = Color.RED;
                 range = 250;
-                width = 40;
-                height = 40;
                 damage = 38;
-                cooldown = 3000;
+                cooldown = 2500;
                 moneyCost = 250;
                 break;
             case CANNON:
                 color = Color.MAGENTA;
                 range = 100;
-                width = 60;
-                height = 60;
                 damage = 25;
                 cooldown = 2000;
                 moneyCost = 200;
@@ -67,34 +60,28 @@ public class TowerManager {
             case LASER:
                 color = Color.ORANGE;
                 range = 180;
-                width = 40;
-                height = 40;
-                damage = 10;
-                cooldown = 300;
+                damage = 5;
+                cooldown = 100;
                 moneyCost = 400;
                 break;
             case ROCKET:
                 color = Color.YELLOW;
                 range = 200;
-                width = 40;
-                height = 40;
                 damage = 50;
                 cooldown = 1000;
                 moneyCost = 500;
                 break;
-            case PLASMA:
+            case MINIGUN:
                 color = Color.GREEN;
                 range = 220;
-                width = 40;
-                height = 40;
-                damage = 50;
-                cooldown = 800;
+                damage = 10;
+                cooldown = 150;
                 moneyCost = 1000;
                 break;
         }
         int x = gridX * tileSize + (tileSize - width) / 2;
         int y = gridY * tileSize + (tileSize - height) / 2;
-        return new Tower(x,y, width, height,range, damage, color, cooldown, moneyCost);
+        return new Tower(x,y, width, height,range, damage, towerType ,color, cooldown, moneyCost);
     }
 
     public boolean isTowerAt(int gridX, int gridY, int tileSize) {

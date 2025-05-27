@@ -1,9 +1,11 @@
 package game.entities;
 
+import game.assets.AssetLoader;
 import game.managers.BulletManager;
 import game.managers.EnemyManager;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Tower  {
 
@@ -19,19 +21,24 @@ public class Tower  {
     private long cooldown;
 
     private Enemy currentEnemy;
+    private TowerType towerType;
+    private BufferedImage towerImage;
 
 
-    public Tower(int x, int y, int width, int height, int range, int damage, Color color,long cooldown, int moneyCost) {
+    public Tower(int x, int y, int width, int height, int range, int damage, TowerType towerType, Color color,long cooldown, int moneyCost) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.range = range;
         this.damage = damage;
+        this.towerType = towerType;
         this.color = color;
         this.cooldown = cooldown;
         this.moneyCost = moneyCost;
         this.lastShotTime = 0;
+
+        towerImage = AssetLoader.loadImage(towerType.getImagePath());
     }
 
     public int getCenterX(){
@@ -88,8 +95,12 @@ public class Tower  {
     }
 
     public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(x, y, width, height);
+       if (towerImage != null) {
+           g.drawImage(towerImage, x, y, null);
+       }else {
+           g.setColor(color);
+           g.fillRect(x, y, width, height);
+       }
         g.setColor(Color.BLACK);
         g.drawRect(x, y, width, height);
 
