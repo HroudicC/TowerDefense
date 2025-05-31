@@ -6,10 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * The MapLoader class is responsible for loading and rendering the game map.
+ */
 public class MapLoader extends JPanel {
 
     private final int TILE_SIZE = 75;
@@ -17,25 +20,33 @@ public class MapLoader extends JPanel {
 
     private BufferedImage grassTile, startPath, endPath, horizontalPath, verticalPath, leftToDownPath, leftToUpPath, rightToDownPath, rightToUpPath;
 
-
+    /**
+     * Constructs a new MapLoader instance.
+     * It loads the map from a file and initializes tile images for rendering.
+     */
     public MapLoader() {
         loadMap();
         setOpaque(true);
 
-        grassTile = AssetLoader.loadImage("src/game/assets/map/Grass.png");
-        startPath = AssetLoader.loadImage("src/game/assets/map/PathStart.png");
-        endPath = AssetLoader.loadImage("src/game/assets/map/PathEnd.png");
+        grassTile = AssetLoader.loadImage("/game/assets/map/Grass.png");
+        startPath = AssetLoader.loadImage("/game/assets/map/PathStart.png");
+        endPath = AssetLoader.loadImage("/game/assets/map/EndPath.png");
 
-        horizontalPath = AssetLoader.loadImage("src/game/assets/map/PathHorizontal.png");
-        verticalPath = AssetLoader.loadImage("src/game/assets/map/PathVertical.png");
-        leftToDownPath = AssetLoader.loadImage("src/game/assets/map/PathLeftToDown.png");
-        leftToUpPath = AssetLoader.loadImage("src/game/assets/map/PathLeftToUp.png");
-        rightToDownPath = AssetLoader.loadImage("src/game/assets/map/PathRightToDown.png");
-        rightToUpPath = AssetLoader.loadImage("src/game/assets/map/PathRightToUp.png");
+        horizontalPath = AssetLoader.loadImage("/game/assets/map/PathHorizontal.png");
+        verticalPath = AssetLoader.loadImage("/game/assets/map/PathVertical.png");
+        leftToDownPath = AssetLoader.loadImage("/game/assets/map/PathLeftToDown.png");
+        leftToUpPath = AssetLoader.loadImage("/game/assets/map/PathLeftToUp.png");
+        rightToDownPath = AssetLoader.loadImage("/game/assets/map/PathRightToDown.png");
+        rightToUpPath = AssetLoader.loadImage("/game/assets/map/PathRightToUp.png");
     }
 
+    /**
+     * Loads the map from a file and converts it to an array of tile types.
+     *
+     * @return true if the map was successfully loaded, false otherwise.
+     */
     public boolean loadMap() {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/game/map/Map"))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/game/map/Map"))))  {
 
             String line;
             int lineCounter = 0;
@@ -69,6 +80,11 @@ public class MapLoader extends JPanel {
         return true;
     }
 
+    /**
+     * Renders the map on the panel.
+     *
+     * @param g the Graphics context used to drawing.
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -77,36 +93,17 @@ public class MapLoader extends JPanel {
             TileType[] tileRow = mapByRows.get(row);
             for (int col = 0; col < tileRow.length; col++) {
                 TileType type = tileRow[col];
-                BufferedImage tileImage = null;
-                switch (type) {
-                    case TileType.GRASS:
-                        tileImage = grassTile;
-                        break;
-                    case TileType.START:
-                        tileImage = startPath;
-                        break;
-                    case TileType.END:
-                        tileImage = endPath;
-                        break;
-                    case TileType.HORIZONTAL_PATH:
-                        tileImage = horizontalPath;
-                        break;
-                    case TileType.VERTICAL_PATH:
-                        tileImage = verticalPath;
-                        break;
-                    case TileType.LEFT_TO_DOWN_PATH:
-                        tileImage = leftToDownPath;
-                        break;
-                    case TileType.LEFT_TO_UP_PATH:
-                        tileImage = leftToUpPath;
-                        break;
-                    case TileType.RIGHT_TO_DOWN_PATH:
-                        tileImage = rightToDownPath;
-                        break;
-                    case TileType.RIGHT_TO_UP_PATH:
-                        tileImage = rightToUpPath;
-                        break;
-                }
+                BufferedImage tileImage = switch (type) {
+                    case TileType.GRASS -> grassTile;
+                    case TileType.START -> startPath;
+                    case TileType.END -> endPath;
+                    case TileType.HORIZONTAL_PATH -> horizontalPath;
+                    case TileType.VERTICAL_PATH -> verticalPath;
+                    case TileType.LEFT_TO_DOWN_PATH -> leftToDownPath;
+                    case TileType.LEFT_TO_UP_PATH -> leftToUpPath;
+                    case TileType.RIGHT_TO_DOWN_PATH -> rightToDownPath;
+                    case TileType.RIGHT_TO_UP_PATH -> rightToUpPath;
+                };
                 if(tileImage != null) {
                     g.drawImage(tileImage, col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
                 } else {
@@ -118,6 +115,13 @@ public class MapLoader extends JPanel {
         }
     }
 
+    /**
+     * Gets the tile type at the specified grid coordinates.
+     *
+     * @param gridX the x-coordinate in the grid.
+     * @param gridY the y-coordinate in the grid.
+     * @return the tile type at the specified location or null if it out of bounds.
+     */
     public TileType getTileType(int gridX, int gridY) {
         if (gridY < 0 || gridY >= mapByRows.size()) {
             return null;

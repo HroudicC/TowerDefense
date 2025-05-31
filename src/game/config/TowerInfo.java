@@ -1,5 +1,10 @@
 package game.config;
 
+/**
+ * The TowerInfo class contains details of the tower configuration.
+ * It holds information such as type, cost, range, damage, cooldown,
+ * and a description that can be used to display tower statistics.
+ */
 public class TowerInfo {
 
     private String towerType;
@@ -9,6 +14,11 @@ public class TowerInfo {
     private int cooldown;
     private String description;
 
+    /**
+     * Returns a formatted string with complete tower information.
+     *
+     * @return a string containing the description, cost, range, damage, and cooldown.
+     */
     public String getInfo(){
         return description + "\n"
                 + "Cost: " + cost + "$" +"\n"

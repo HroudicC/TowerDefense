@@ -6,6 +6,10 @@ import game.map.PanelType;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * MainWindow is the main frame of the whole game.
+ * It uses a card layout to switch between different panels like the lobby, game, and tutorial.
+ */
 public class MainWindow extends JFrame {
 
     private CardLayout cardLayout;
@@ -16,6 +20,10 @@ public class MainWindow extends JFrame {
     private GamePanel gamePanel;
     private MapLoader mapLoader;
 
+    /**
+     * Constructs a new MainWindow.
+     * It sets up the basic properties, creates the UI components, and displays the lobby panel by default.
+     */
     public MainWindow(){
         setTitle("Tower Defense");
         setSize(1600, 900);
@@ -33,6 +41,11 @@ public class MainWindow extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Creates and initializes the user interface components.
+     * It creates instances of MapLoader, LobbyPanel, TutorialPanel, and GamePanel
+     * and then adds these panels to the container using a card layout.
+     */
     private void createUIComponents() {
         mapLoader = new MapLoader();
         lobbyPanel = new LobbyPanel(this);
@@ -44,6 +57,12 @@ public class MainWindow extends JFrame {
         container.add(tutorialPanel, String.valueOf(PanelType.TUTORIAL_PANEL));
     }
 
+    /**
+     * Switches the displayed panel.
+     * The panel to display is selected based on the given PanelType.
+     *
+     * @param panel the panel type to switch to.
+     */
     public void switchPanel(PanelType panel) {
         cardLayout.show(container, String.valueOf(panel));
     }

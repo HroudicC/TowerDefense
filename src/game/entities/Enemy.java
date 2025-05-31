@@ -8,7 +8,15 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Enemy extends AbstractEntity {
+/**
+ * The Enemy class represents an enemy that moves on the map along a calculated path.
+ * The enemy uses a depth-first search (DFS) algorithm to determine its path from a START tile to an END tile
+ * and moves along that path. It contains properties like speed, health, and a money reward that is given upon its defeat.
+ * ChatGPT helped me with this class.
+ */
+public class Enemy {
+
+    private int x, y, width, height;
 
     private int speed, health, moneyReward;
     private int pathIndex = 0;
@@ -17,13 +25,29 @@ public class Enemy extends AbstractEntity {
 
     private MapLoader mapLoader;
     private boolean pathCalculated = false;
-    private Direction movementDirection;
 
     private BufferedImage enemyImage;
     private EnemyType enemyType;
 
+    /**
+     * Constructs a new Enemy with the specified parameters.
+     *
+     * @param x the initial x-coordinate.
+     * @param y the initial y-coordinate.
+     * @param width the width of the enemy.
+     * @param height the height of the enemy.
+     * @param speed the movement speed of the enemy.
+     * @param health the initial health of the enemy.
+     * @param enemyType the type of enemy (used to load the corresponding image asset).
+     * @param enemyColor the fallback color of the enemy if the image is unavailable.
+     * @param moneyReward the reward amount given when the enemy is defeated.
+     * @param mapLoader the MapLoader instance used to retrieve map data for path calculation.
+     */
     public Enemy(int x, int y, int width, int height, int speed, int health, EnemyType enemyType, Color enemyColor, int moneyReward, MapLoader mapLoader) {
-        super(x, y, width, height);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.speed = speed;
         this.health = health;
         this.enemyType = enemyType;
@@ -35,9 +59,15 @@ public class Enemy extends AbstractEntity {
     }
 
     /**
-     * DFS metoda pro nalezení cesty od startu k cíli.
-     * Prochází čtyři směry a při nalezení správné cesty vrací true.
-     * Made by ChatGPT
+     * Recursively performs a depth-first search (DFS) to find a valid path from the current position to the target endpoint.
+     * It searches in four directions (right, left, down, up) until it finds a path.
+     *
+     * @param x the current x-coordinate.
+     * @param y the current y-coordinate.
+     * @param end the target endpoint.
+     * @param path the current path taken as a list of Points.
+     * @param visited a 2D array marking visited grid positions.
+     * @return true if a valid path to the endpoint is found, false otherwise.
      */
     private boolean dfs(int x, int y, Point end, ArrayList<Point> path, boolean[][] visited) {
 
@@ -68,17 +98,16 @@ public class Enemy extends AbstractEntity {
         if (dfs(x, y + 1, end, path, visited)) return true;
         if (dfs(x, y - 1, end, path, visited)) return true;
 
-        // Pokud cesta nevede k cíli, odebereme aktuální bod a vracíme false
+        // If the current path does not lead to the endpoint, backtrack.
         path.remove(path.size() - 1);
         return false;
     }
 
     /**
-     * Metoda pro výpočet cesty. Najde bod START a END v mapě a zavolá DFS.
-     * Po úspěšném výpočtu nastaví počáteční pozici nepřítele.
-     * Made by ChatGPT
+     * Calculates the enemy's path by finding the START and END tiles in the map and calling DFS.
+     * Once a valid path is found, the enemy's starting position (in pixels) is set based on the START tile.
      */
-    private void calculatePath() {
+    public void calculatePath() {
         Point start = null;
         Point end = null;
 
@@ -98,20 +127,22 @@ public class Enemy extends AbstractEntity {
             boolean[][] visited = new boolean[rows.size()][rows.get(0).length];
             if (dfs(start.x, start.y, end, path, visited)) {
                 pathCalculated = true;
-                // Nastavení počáteční pozice nepřítele v pixelech
+                // Assign initial pixel position based on the START tile.
                 this.x = start.x * mapLoader.getTILE_SIZE();
                 this.y = start.y * mapLoader.getTILE_SIZE();
             } else {
-                System.out.println("Cesta nebyla nalezena!");
+                System.out.println("Path was not found!");
             }
         } else {
-            System.out.println("Start nebo End bod nebyl nalezen!");
+            System.out.println("Start or End point was not found!");
         }
     }
 
-
-    @Override
-    public ArrayList<Point> update() {
+    /**
+     * Updates the enemy's position along its calculated path. If the enemy is close enough to the next target tile
+     * (based on its speed), it snaps to that tile and proceeds to the next target tile.
+     */
+    public void update() {
 
         if (!pathCalculated) {
             calculatePath();
@@ -123,55 +154,39 @@ public class Enemy extends AbstractEntity {
             int targetY = targetTile.y * mapLoader.getTILE_SIZE();
             int dx = targetX - x;
             int dy = targetY - y;
-            double distance = Math.sqrt(dx * dx + dy * dy); //Vypocitani vzdalenosti mezi enemy a vezi
+            // Calculate the distance to the target tile.
+            double distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance <= speed) {
                 x = targetX;
                 y = targetY;
-                pathIndex++; // posune na dalsi bod cesty
+                pathIndex++; // Proceed to the next point in the path.
             } else {
                 x += (int) ((dx / distance) * speed);
                 y += (int) ((dy / distance) * speed);
             }
-
-            if (pathIndex < path.size() - 1) {
-                Point current = path.get(pathIndex);
-                Point next = path.get(pathIndex + 1);
-                int diffX = next.x - current.x;
-                int diffY = next.y - current.y;
-
-                //Porovnani rozdilu X a Y kvuli pohybu
-                if (Math.abs(diffX) > Math.abs(diffY)) {
-                    if (diffX > 0) {
-                        movementDirection = Direction.RIGHT;
-                    } else {
-                        movementDirection = Direction.LEFT;
-                    }
-                } else {
-                    if (diffY > 0) {
-                        movementDirection = Direction.DOWN;
-                    } else {
-                        movementDirection = Direction.UP;
-                    }
-                }
-
-            }
         }
-        return path;
     }
 
+    /**
+     * Deal damage to an enemy by deducting that damage value from their health.
+     *
+     * @param damage the amount of damage to apply.
+     */
     public void takeDamage(int damage) {
         this.health -= damage;
 
-        System.out.println("Enemy dostal " + damage + " damage. Zbyvajici zivoty: " + health);
-
         if(this.health <= 0) {
             this.health = 0;
-            System.out.println("Enemy je mrtvi. Odmena: " + moneyReward + "$.");
+            System.out.println("Enemy is dead. Reward: " + moneyReward + "$.");
         }
     }
 
-
+    /**
+     * Checks if the enemy has reached the end of its path.
+     *
+     * @return true if the enemy has reached its final destination.
+     */
     public boolean hasReachedEnd() {
         return pathCalculated && pathIndex >= path.size();
     }
@@ -184,13 +199,52 @@ public class Enemy extends AbstractEntity {
         return moneyReward;
     }
 
-    @Override
+    /**
+     * Calculates and returns the x-coordinate of the enemy's center.
+     *
+     * @return the center x-coordinate (in pixels).
+     */
+    public int getCenterX() {
+        return x + width / 2;
+    }
+
+    /**
+     * Calculates and returns the y-coordinate of the enemy's center.
+     *
+     * @return the center y-coordinate (in pixels).
+     */
+    public int getCenterY() {
+        return y + height / 2;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Renders the enemy on the given graphics context.
+     * If an image is available, it is rendered, but otherwise a colored oval is used.
+     *
+     * @param g the Graphics context used for drawing.
+     */
     public void draw(Graphics g) {
         if (enemyImage != null) {
             g.drawImage(enemyImage,x,y,null);
         }else{
             g.setColor(enemyColor);
-            g.fillOval(x, y, getWidth(), getHeight());
+            g.fillOval(x, y, width, height);
         }
     }
 }
